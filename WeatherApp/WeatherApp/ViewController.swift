@@ -32,14 +32,13 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        if let isLocation = userDefaults.string(forKey: "isLocation"), isLocation == "yes" {
-            print(userDefaults.double(forKey: "latitude"))
-            print(userDefaults.double(forKey: "longitude"))
-                getWeatherDetails(lat: userDefaults.double(forKey: "latitude"), lon: userDefaults.double(forKey: "longitude"))
+        if let isLocation = userDefaults.string(forKey: UserdefaultsKeys.isLocation), isLocation == "yes" {
+                getWeatherDetails(lat: userDefaults.double(forKey: UserdefaultsKeys.latitude), lon: userDefaults.double(forKey: UserdefaultsKeys.longitude))
         }
         else {
             getUserLocation()
         }
+        
         bindViewModel()
     }
     
@@ -47,7 +46,6 @@ class ViewController: UIViewController {
         
         viewModel.$weatherDetails.receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                //print("data...\(self?.viewModel.weatherDetails?.main.pressure ?? 0)")
                 if let details = self?.viewModel.weatherDetails?.main.temp {
                     self?.updateData()
                 }
@@ -78,6 +76,7 @@ class ViewController: UIViewController {
         viewModel.getLocationsList(locationName: searchString)
     }
     
+    //@usage: tap on Search icon we can call the api for location details
     @IBAction func searchButtonTapped(_ sender: UIButton) {
         if searchLocationTextfield.text?.count ?? 0 > 0 {
             searchLocationTextfield.resignFirstResponder()
@@ -87,6 +86,7 @@ class ViewController: UIViewController {
         }
     }
     
+    //@usage: Showing serached locations
     func showLocationNames(names: [LocationModel]) {
         guard let locationsVc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LocationNamesViewController") as? LocationNamesViewController else { return }
         locationsVc.locationNames = names
@@ -102,6 +102,7 @@ class ViewController: UIViewController {
         }
     }
     
+    //@usage: Once get the weather details we can update the data
     func updateData()  {
         labelDate.text = "\(dateConvertion(date: Date(timeIntervalSince1970: Double(viewModel.weatherDetails?.dt ?? 0))))"
         labelName.text = "\(viewModel.weatherDetails?.name ?? ""), \(viewModel.weatherDetails?.sys.country ?? "")"
@@ -116,13 +117,15 @@ class ViewController: UIViewController {
         saveSearchedLocation()
     }
     
+    //@usage: Save updated serached location details
     func saveSearchedLocation() {
-        userDefaults.set("yes", forKey: "isLocation")
-        userDefaults.set(viewModel.weatherDetails?.coord.lat ?? 0.0, forKey: "latitude")
-        userDefaults.set(viewModel.weatherDetails?.coord.lon ?? 0.0, forKey: "longitude")
+        userDefaults.set("yes", forKey: UserdefaultsKeys.isLocation)
+        userDefaults.set(viewModel.weatherDetails?.coord.lat ?? 0.0, forKey: UserdefaultsKeys.latitude)
+        userDefaults.set(viewModel.weatherDetails?.coord.lon ?? 0.0, forKey: UserdefaultsKeys.longitude)
         userDefaults.synchronize()
     }
     
+    //@usage: Date conversion
     func dateConvertion(date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM dd, HH:mm a"
@@ -145,6 +148,7 @@ extension ViewController: UIPopoverPresentationControllerDelegate {
     }
 }
 
+//MARK: Textfield Delegate Method
 extension ViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -152,6 +156,7 @@ extension ViewController: UITextFieldDelegate {
     }
 }
 
+//MARK: LocationSelectionDelegate
 extension ViewController: LocationSelectionDelegate {
     func locationSelection(row: Int, details: LocationModel?) {
         //searchLocationTextfield.text = ""
