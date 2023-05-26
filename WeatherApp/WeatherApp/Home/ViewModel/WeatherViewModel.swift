@@ -49,7 +49,6 @@ class WeatherViewModel: WeatherViewModelProtocol {
      */
     func getWeatherDetails(lat: Double, lon: Double) {
         let url = UrlsList.baseUrl + "data/2.5/weather?lat=\(lat)&lon=\(lon)&units=metric&appid=\(AllData.apiKey)"
-        print("Weather details api call...\(url)")
         WeatherService.shared.getDetails(url: url, type: WeatherDetailsModel.self)
             .receive(on: RunLoop.main)
             .sink { completion in
@@ -66,18 +65,22 @@ class WeatherViewModel: WeatherViewModelProtocol {
             .store(in: &self.cancellables)
     }
     
+    //@usage: convert the value to date string
     func getFormatDate() -> String {
         return CommonUtilities.shared.dateConvertion(date: Date(timeIntervalSince1970: Double(self.weatherDetails?.dt ?? 0)), dateFormat: AllData.dateFormat)
     }
     
+    //@usage - returns location name and country details
     func getLocationDetails() -> String {
         return "\(self.weatherDetails?.name ?? ""), \(self.weatherDetails?.sys.country ?? "")"
     }
     
+    //@usage - returns the min temp from weather details
     func getTempMin() -> String {
         return "\(Int(self.weatherDetails?.main.tempMin ?? 0.0))"
     }
     
+    //@usage - returns the feelLike temp
     func getFeelLike() -> String {
         return "\(Int(self.weatherDetails?.main.feelsLike ?? 0.0))"
     }
