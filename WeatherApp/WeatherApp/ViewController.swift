@@ -42,6 +42,7 @@ class ViewController: UIViewController {
         bindViewModel()
     }
     
+    //@usage: creating subscribers for @published property wrappers - weatherDetails, locationsList
     func bindViewModel() {
         
         viewModel.$weatherDetails.receive(on: DispatchQueue.main)
@@ -61,17 +62,18 @@ class ViewController: UIViewController {
             }
             .store(in: &self.cancellables)
     }
-
+//@usage: Initially request for user permission for accessing the users location
     func getUserLocation() {
         locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
     }
     
+    //@usage: based on latitude and longitude we are calling weather details api
     func getWeatherDetails(lat: Double, lon: Double) {
         viewModel.getWeatherDetails(lat: lat, lon: lon)
     }
-    
+    //@usage: based searched string, calling locations api
     func getLocationDetails(searchString: String) {
         viewModel.getLocationsList(locationName: searchString)
     }

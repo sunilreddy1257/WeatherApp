@@ -15,6 +15,7 @@ class WeatherService {
     
     private var cancellables = Set<AnyCancellable>()
     
+    //@usage: call api and decoding in given generic array format
     func getData<T: Decodable>(url: String, type: T.Type) -> Future<[T], Error> {
         return Future<[T], Error> { [weak self] promise in
             guard let url = URL(string: url) else {
@@ -44,6 +45,7 @@ class WeatherService {
         }
     }
     
+    //@usage: call api and decoding in given generic decodable class format
     func getDetails<T: Decodable>(url: String, type: T.Type) -> Future<T, Error> {
         return Future<T, Error> { [weak self] promise in
             guard let url = URL(string: url) else {
