@@ -5,8 +5,8 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "RCQ-GD-gqb"; */
 "RCQ-GD-gqb.text" = "Label";
 
-/* Class = "UITextField"; placeholder = "Please enter city names of US"; ObjectID = "T9L-kg-J6B"; */
-"T9L-kg-J6B.placeholder" = "Please enter city names of US";
+/* Class = "UITextField"; placeholder = "Please enter location"; ObjectID = "T9L-kg-J6B"; */
+"T9L-kg-J6B.placeholder" = "Please enter location";
 
 /* Class = "UILabel"; text = "Label"; ObjectID = "ckp-32-7hr"; */
 "ckp-32-7hr.text" = "Label";

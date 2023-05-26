@@ -60,9 +60,10 @@ class WeatherViewModel {
     }
     
     //@usage: convert the value to date string
+
     func getFormatDate() -> String {
-        return CommonUtilities.shared.dateConvertion(date: Date(timeIntervalSince1970: (Double(self.weatherDetails?.dt ?? 0) + Double(self.weatherDetails?.timezone ?? 0))), dateFormat: AllData.dateFormat)
-    }
+            return CommonUtilities.shared.timeDifference(date: Double(self.weatherDetails?.dt ?? 0), diff: self.weatherDetails?.timezone ?? 0)
+        }
     
     //@usage - returns location name and country details
     func getLocationDetails() -> String {
