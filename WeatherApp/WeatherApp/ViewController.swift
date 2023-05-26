@@ -90,7 +90,7 @@ class ViewController: UIViewController {
     }
     
     //@usage: Showing serached locations
-    func showLocationNames(names: [LocationModel]) {
+    func showLocationNames(names: [List]) {
         guard let locationsVc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LocationNamesViewController") as? LocationNamesViewController else { return }
         locationsVc.locationNames = names
         locationsVc.modalPresentationStyle = .popover
@@ -115,7 +115,9 @@ class ViewController: UIViewController {
         var info = ""
         if let infoData = viewModel.weatherDetails?.weather, infoData.count > 0 {
             info = "\(infoData.first?.description ?? "")" + "."
-            if let url = URL(string: "\(UrlsList.imageUrl)\(infoData.first?.icon ?? "")\(AllData.imageExtension)") {
+            let urlString = "\(UrlsList.imageUrl)\(infoData.first?.icon ?? "")\(AllData.imageExtension)"
+            print("image url..\(urlString)")
+            if let url = URL(string: urlString) {
                 imageCloud.kf.setImage(with: url)
             }
         }
@@ -133,11 +135,12 @@ class ViewController: UIViewController {
         userDefaults.synchronize()
     }
     
+    //@usage: Showing selected location annotation on map
     func showLocationOnMap() {
         let locationAnnotation = MKPointAnnotation()
         let coordinate = CLLocationCoordinate2D(latitude: viewModel.weatherDetails?.coord.lat ?? 0.0, longitude: viewModel.weatherDetails?.coord.lon ?? 0.0)
         locationAnnotation.coordinate = coordinate
-        locationAnnotation.title = viewModel.getLocationDetails() // Optional
+        locationAnnotation.title = viewModel.getLocationDetails()
         self.mapView.addAnnotation(locationAnnotation)
         setMapFocus(centerCoordinate: coordinate, radiusInKm: 150)
     }
@@ -146,9 +149,10 @@ class ViewController: UIViewController {
     {
         let diameter = radius * 2000
         let region: MKCoordinateRegion = MKCoordinateRegion(center: centerCoordinate, latitudinalMeters: diameter, longitudinalMeters: diameter)
-    self.mapView.setRegion(region, animated: false)
+        self.mapView.setRegion(region, animated: false)
     }
     
+    //@usage: remove old annotations
     func removeAnnotations() {
         let allAnnotations = self.mapView.annotations
         self.mapView.removeAnnotations(allAnnotations)
@@ -182,9 +186,9 @@ extension ViewController: UITextFieldDelegate {
 
 //MARK: LocationSelectionDelegate
 extension ViewController: LocationSelectionDelegate {
-    func locationSelection(details: LocationModel?) {
+    func locationSelection(details: List?) {
         searchLocationTextfield.text = ""
-        if let longitude = details?.lon, let latitude = details?.lat {
+        if let longitude = details?.coord?.lon, let latitude = details?.coord?.lat {
             self.getWeatherDetails(lat: latitude, lon: longitude)
         }
     }

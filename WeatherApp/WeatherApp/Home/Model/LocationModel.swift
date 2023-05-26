@@ -7,21 +7,30 @@
 
 import Foundation
 
-struct LocationModel: Codable {
-
-    let name: String
-    let localNames: LocalNames?
-    let lat: Double
-    let lon: Double
-    let country: String
-    let state: String
-
+struct LocationModel: Decodable {
+    let message: String
+    let cod: String
+    let count: Int
+    let list: [List]
 }
 
-struct LocalNames: Codable {
-
-    let ka: String?
-    let ml: String?
-    let eo: String?
-
+struct List: Codable {
+    let id: Int?
+    let name: String?
+    let coord: Coord?
+    let main: Main
+    let dt: Int?
+    let wind: Wind?
+    let sys: Sys?
+    let rain: Rain?
+    let snow: Snow?
+    let clouds: Clouds?
+    let weather: [Weather]?
 }
+struct Rain: Codable {
+    let value: String?
+}
+struct Snow: Codable {
+    let value: String?
+}
+

@@ -9,12 +9,12 @@ import UIKit
 
 //@usage -> Send selected city details to viewcontroller
 protocol LocationSelectionDelegate: AnyObject {
-    func locationSelection(details: LocationModel?)
+    func locationSelection(details: List?)
 }
 
 class LocationNamesViewController: UIViewController {
     
-    var locationNames:[LocationModel]? {
+    var locationNames:[List]? {
         didSet {
             calculateAndSetPreferredContentSize()
         }
@@ -46,8 +46,8 @@ extension LocationNamesViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: locationNameCell) as? LocationNameCell {
             let locationData = locationNames?[indexPath.row]
-            cell.textLabel?.text = "\(locationData?.name ?? ""), \(locationData?.country ?? "")"
-            print("\(locationData?.name ?? "")")
+            cell.textLabel?.text = "\(locationData?.name ?? ""), \(locationData?.sys?.country ?? "")"
+            //print("\(locationData?.name ?? "")")
             return cell
         }
         return UITableViewCell()

@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol WeatherViewModelProtocol {
-    var locationsList: [LocationModel] {set get}
+    var locationsList: [List] {set get}
     var weatherDetails: WeatherDetailsModel? {set get}
     func getLocationsList(locationName: String, limit: Int)
     func getWeatherDetails(lat: Double, lon: Double)
@@ -17,7 +17,7 @@ protocol WeatherViewModelProtocol {
 
 class WeatherViewModel: WeatherViewModelProtocol {
     
-    @Published var locationsList = [LocationModel]()
+    @Published var locationsList = [List]()
     @Published var weatherDetails: WeatherDetailsModel?
     
     private var cancellables = Set<AnyCancellable>()
@@ -27,8 +27,9 @@ class WeatherViewModel: WeatherViewModelProtocol {
      @usage: based on location we are getting the list of locations.
      */
     func getLocationsList(locationName: String, limit: Int = 5) {
-        let url = UrlsList.baseUrl + "geo/1.0/direct?q=\(locationName)&limit=\(limit)&appid=\(AllData.apiKey)"
-        WeatherService.shared.getData(url: url, type: LocationModel.self)
+        let url = UrlsList.baseUrl + "data/2.5/find?q=\(locationName)&limit=\(limit)&appid=\(AllData.apiKey)&units=metric"
+        WeatherService.shared.getDetails(url: url, type: LocationModel.self)
+            .receive(on: RunLoop.main)
             .sink { completion in
                 switch completion {
                 case .finished:
@@ -37,7 +38,7 @@ class WeatherViewModel: WeatherViewModelProtocol {
                     print(error.localizedDescription)
                 }
             } receiveValue: {[weak self] locationsList in
-                self?.locationsList = locationsList
+                self?.locationsList = locationsList.list
             }
             .store(in: &self.cancellables)
     }
@@ -48,7 +49,9 @@ class WeatherViewModel: WeatherViewModelProtocol {
      */
     func getWeatherDetails(lat: Double, lon: Double) {
         let url = UrlsList.baseUrl + "data/2.5/weather?lat=\(lat)&lon=\(lon)&units=metric&appid=\(AllData.apiKey)"
+        print("Weather details api call...\(url)")
         WeatherService.shared.getDetails(url: url, type: WeatherDetailsModel.self)
+            .receive(on: RunLoop.main)
             .sink { completion in
                 switch completion {
                 case .finished:
@@ -57,6 +60,7 @@ class WeatherViewModel: WeatherViewModelProtocol {
                     print(error.localizedDescription)
                 }
             } receiveValue: {[weak self] weatherDetails in
+                print(weatherDetails.coord)
                 self?.weatherDetails = weatherDetails
             }
             .store(in: &self.cancellables)
