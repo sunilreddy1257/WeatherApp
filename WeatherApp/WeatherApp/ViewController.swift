@@ -8,13 +8,13 @@
 import UIKit
 import MapKit
 import Combine
+import Kingfisher
 
 class ViewController: UIViewController {
     @IBOutlet weak var searchLocationTextfield: UITextField!
     @IBOutlet weak var searchButton: UIButton!
     
     @IBOutlet weak var labelDate: UILabel!
-    
     @IBOutlet weak var labelName: UILabel!
     @IBOutlet weak var labelTemp: UILabel!
     @IBOutlet weak var imageCloud: UIImageView!
@@ -27,34 +27,32 @@ class ViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     
     let userDefaults = UserDefaults.standard
-
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        if let isLocation = userDefaults.string(forKey: UserdefaultsKeys.isLocation), isLocation == "yes" {
-                getWeatherDetails(lat: userDefaults.double(forKey: UserdefaultsKeys.latitude), lon: userDefaults.double(forKey: UserdefaultsKeys.longitude))
-        }
-        else {
+        if let isLocation = userDefaults.string(forKey: UserdefaultsKeys.isLocation), isLocation == AllData.yes {
+            getWeatherDetails(lat: userDefaults.double(forKey: UserdefaultsKeys.latitude), lon: userDefaults.double(forKey: UserdefaultsKeys.longitude))
+        } else {
             getUserLocation()
         }
-        
         bindViewModel()
     }
     
-    //@usage: creating subscribers for @published property wrappers - weatherDetails, locationsList
+    //@usage: create subscribers for @published property wrappers -> weatherDetails, locationsList
     func bindViewModel() {
-        
-        viewModel.$weatherDetails.receive(on: DispatchQueue.main)
+        viewModel.$weatherDetails
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                if let details = self?.viewModel.weatherDetails?.main.temp {
+                if let _ = self?.viewModel.weatherDetails?.main.temp {
                     self?.updateData()
                 }
             }
             .store(in: &self.cancellables)
         
-        
-        viewModel.$locationsList.receive(on: DispatchQueue.main)
+        viewModel.$locationsList
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 if let listData = self?.viewModel.locationsList, listData.count > 0 {
                     self?.showLocationNames(names: listData)
@@ -62,7 +60,8 @@ class ViewController: UIViewController {
             }
             .store(in: &self.cancellables)
     }
-//@usage: Initially request for user permission for accessing the users location
+    
+    //@usage: Initially request for user permission for accessing the users location
     func getUserLocation() {
         locationManager.requestWhenInUseAuthorization()
         locationManager.delegate = self
@@ -106,33 +105,37 @@ class ViewController: UIViewController {
     
     //@usage: Once get the weather details we can update the data
     func updateData()  {
-        labelDate.text = "\(dateConvertion(date: Date(timeIntervalSince1970: Double(viewModel.weatherDetails?.dt ?? 0))))"
-        labelName.text = "\(viewModel.weatherDetails?.name ?? ""), \(viewModel.weatherDetails?.sys.country ?? "")"
-        //labelTemp.text = "\(Int(viewModel.weatherDetails?.main.temp ?? 0.0))" + "°" + "C"
-        labelTemp.text = "\(Int(viewModel.weatherDetails?.main.tempMin ?? 0.0))" + "°" + "C"
-        let feelsData = "\(Int(viewModel.weatherDetails?.main.feelsLike ?? 0.0))" + "°" + "C"
+        labelDate.text = viewModel.getFormatDate()
+        labelName.text = viewModel.getLocationDetails()
+        labelTemp.text = viewModel.getTempMin() + AllData.showCen
+        let feelsData = viewModel.getFeelLike() + AllData.showCen
+        
         var info = ""
         if let infoData = viewModel.weatherDetails?.weather, infoData.count > 0 {
-            info = "\(infoData.first?.main ?? "")" + "."
+            info = "\(infoData.first?.description ?? "")" + "."
+            if let url = URL(string: "\(UrlsList.imageUrl)\(infoData.first?.icon ?? "")\(AllData.imageExtension)") {
+                imageCloud.kf.setImage(with: url)
+            }
         }
-        labelFeel.text = "Feels like \(feelsData). \(info)"
-        saveSearchedLocation()
+        labelFeel.text = "\(AllData.feelsLike) \(feelsData). \(info)"
+        saveRecentLocation()
+    }
+    
+    func loadImage() {
+        //let url = URL(string: "https://example.com/image.png")
+    //https://openweathermap.org/img/wn/" //10d@2x.png
+       // imageView.kf.setImage(with: url)
+       // if let url = URL(string: "\(UrlsList.imageUrl)\()")
     }
     
     //@usage: Save updated serached location details
-    func saveSearchedLocation() {
-        userDefaults.set("yes", forKey: UserdefaultsKeys.isLocation)
+    func saveRecentLocation() {
+        userDefaults.set(AllData.yes, forKey: UserdefaultsKeys.isLocation)
         userDefaults.set(viewModel.weatherDetails?.coord.lat ?? 0.0, forKey: UserdefaultsKeys.latitude)
         userDefaults.set(viewModel.weatherDetails?.coord.lon ?? 0.0, forKey: UserdefaultsKeys.longitude)
         userDefaults.synchronize()
     }
     
-    //@usage: Date conversion
-    func dateConvertion(date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM dd, HH:mm a"
-        return formatter.string(from: Date.now)
-    }
 }
 
 //MARK: CLLocationManager Delegate Methods
@@ -144,6 +147,7 @@ extension ViewController: CLLocationManagerDelegate {
     }
 }
 
+//Mark: PopOver Delegate Method
 extension ViewController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
@@ -160,8 +164,8 @@ extension ViewController: UITextFieldDelegate {
 
 //MARK: LocationSelectionDelegate
 extension ViewController: LocationSelectionDelegate {
-    func locationSelection(row: Int, details: LocationModel?) {
-        //searchLocationTextfield.text = ""
+    func locationSelection(details: LocationModel?) {
+        searchLocationTextfield.text = ""
         if let longitude = details?.lon, let latitude = details?.lat {
             self.getWeatherDetails(lat: latitude, lon: longitude)
         }

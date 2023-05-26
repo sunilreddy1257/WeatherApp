@@ -7,9 +7,9 @@
 
 import UIKit
 
-//@usage: get selected location details along with position
+//@usage -> Send selected city details to viewcontroller
 protocol LocationSelectionDelegate: AnyObject {
-    func locationSelection(row: Int, details: LocationModel?)
+    func locationSelection(details: LocationModel?)
 }
 
 class LocationNamesViewController: UIViewController {
@@ -29,6 +29,7 @@ class LocationNamesViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
+    //Based on number of citys contentsize will be calculated
     func calculateAndSetPreferredContentSize() {
         let totalItems = CGFloat(locationNames?.count ?? 0)
             let totalHeight = totalItems * 55
@@ -36,14 +37,14 @@ class LocationNamesViewController: UIViewController {
         }
 
 }
-
+//MARK: Tableview Delegate and DataSource Methods
 extension LocationNamesViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return locationNames?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "LocationNameCell") as? LocationNameCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: locationNameCell) as? LocationNameCell {
             let locationData = locationNames?[indexPath.row]
             cell.textLabel?.text = "\(locationData?.name ?? ""), \(locationData?.country ?? "")"
             print("\(locationData?.name ?? "")")
@@ -53,7 +54,7 @@ extension LocationNamesViewController: UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.locationSelection(row: indexPath.row, details: locationNames?[indexPath.row])
+        delegate?.locationSelection(details: locationNames?[indexPath.row])
         self.dismiss(animated: true)
     }
 }

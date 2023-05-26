@@ -12,3 +12,11 @@ struct UserdefaultsKeys {
     static let latitude = "latitude"
     static let longitude = "longitude"
 }
+
+struct AllData {
+    static let dateFormat = "MMM dd, HH:mm a"
+    static let feelsLike = "Feels like"
+    static let showCen = "°" + "C"
+    static let yes = "yes"
+    static let imageExtension = "@2x.png"
+}

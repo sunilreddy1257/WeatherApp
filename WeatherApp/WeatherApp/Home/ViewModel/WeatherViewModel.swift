@@ -61,4 +61,20 @@ class WeatherViewModel: WeatherViewModelProtocol {
             }
             .store(in: &self.cancellables)
     }
+    
+    func getFormatDate() -> String {
+        return CommonUtilities.shared.dateConvertion(date: Date(timeIntervalSince1970: Double(self.weatherDetails?.dt ?? 0)), dateFormat: AllData.dateFormat)
+    }
+    
+    func getLocationDetails() -> String {
+        return "\(self.weatherDetails?.name ?? ""), \(self.weatherDetails?.sys.country ?? "")"
+    }
+    
+    func getTempMin() -> String {
+        return "\(Int(self.weatherDetails?.main.tempMin ?? 0.0))"
+    }
+    
+    func getFeelLike() -> String {
+        return "\(Int(self.weatherDetails?.main.feelsLike ?? 0.0))"
+    }
 }
