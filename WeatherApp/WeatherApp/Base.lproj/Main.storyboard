@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Map view configurations" minToolsVersion="14.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -74,7 +75,7 @@
                                                 </constraints>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PU0-td-Mvw">
-                                                <rect key="frame" x="71.666666666666686" y="125" width="250" height="110"/>
+                                                <rect key="frame" x="71.666666666666686" y="120" width="250" height="110"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yco-yb-N6B">
                                                         <rect key="frame" x="15" y="15" width="80" height="80"/>
@@ -105,7 +106,7 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FLW-lG-df8">
-                                                <rect key="frame" x="121.66666666666669" y="250" width="150" height="50"/>
+                                                <rect key="frame" x="121.66666666666669" y="235" width="150" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="bxk-N8-IcG"/>
                                                 </constraints>
@@ -113,15 +114,23 @@
                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7lK-cU-P7W">
+                                                <rect key="frame" x="20" y="315" width="353" height="330"/>
+                                                <standardMapConfiguration key="preferredConfiguration"/>
+                                            </mapView>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstItem="PU0-td-Mvw" firstAttribute="top" secondItem="opx-0L-HRb" secondAttribute="bottom" constant="15" id="4Gy-6q-YCr"/>
+                                            <constraint firstItem="PU0-td-Mvw" firstAttribute="top" secondItem="opx-0L-HRb" secondAttribute="bottom" constant="10" id="4Gy-6q-YCr"/>
                                             <constraint firstItem="PU0-td-Mvw" firstAttribute="centerX" secondItem="YwR-4r-KZJ" secondAttribute="centerX" id="6Iv-Wh-wWa"/>
                                             <constraint firstItem="FLW-lG-df8" firstAttribute="trailing" secondItem="opx-0L-HRb" secondAttribute="trailing" id="7nd-6D-N5e"/>
                                             <constraint firstItem="opx-0L-HRb" firstAttribute="centerX" secondItem="YwR-4r-KZJ" secondAttribute="centerX" id="9aZ-mt-AcC"/>
+                                            <constraint firstItem="7lK-cU-P7W" firstAttribute="top" secondItem="FLW-lG-df8" secondAttribute="bottom" constant="30" id="JVW-Vd-qvL"/>
                                             <constraint firstAttribute="height" constant="685" id="LpO-Qu-adJ"/>
-                                            <constraint firstItem="FLW-lG-df8" firstAttribute="top" secondItem="PU0-td-Mvw" secondAttribute="bottom" constant="15" id="QqW-7i-a4q"/>
+                                            <constraint firstAttribute="trailing" secondItem="7lK-cU-P7W" secondAttribute="trailing" constant="20" id="QhC-es-jNZ"/>
+                                            <constraint firstItem="FLW-lG-df8" firstAttribute="top" secondItem="PU0-td-Mvw" secondAttribute="bottom" constant="5" id="QqW-7i-a4q"/>
+                                            <constraint firstItem="7lK-cU-P7W" firstAttribute="leading" secondItem="YwR-4r-KZJ" secondAttribute="leading" constant="20" id="TIA-pW-BEF"/>
+                                            <constraint firstAttribute="bottom" secondItem="7lK-cU-P7W" secondAttribute="bottom" constant="40" id="UQz-29-vIy"/>
                                             <constraint firstItem="opx-0L-HRb" firstAttribute="top" secondItem="YwR-4r-KZJ" secondAttribute="top" constant="40" id="fU4-FM-hAN"/>
                                             <constraint firstItem="FLW-lG-df8" firstAttribute="leading" secondItem="opx-0L-HRb" secondAttribute="leading" id="lbk-uR-mnF"/>
                                         </constraints>
@@ -129,7 +138,6 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="YwR-4r-KZJ" firstAttribute="top" secondItem="Fd5-Oq-a7R" secondAttribute="top" id="22E-ay-7Ja"/>
-                                    <constraint firstItem="YwR-4r-KZJ" firstAttribute="height" secondItem="Fd5-Oq-a7R" secondAttribute="height" constant="1" id="Za9-XF-AUX"/>
                                     <constraint firstItem="YwR-4r-KZJ" firstAttribute="leading" secondItem="Fd5-Oq-a7R" secondAttribute="leading" id="duW-6Y-LWB"/>
                                     <constraint firstItem="YwR-4r-KZJ" firstAttribute="width" secondItem="Fd5-Oq-a7R" secondAttribute="width" id="g5v-N2-KMt"/>
                                     <constraint firstAttribute="trailing" secondItem="YwR-4r-KZJ" secondAttribute="trailing" id="lpS-Zw-V39"/>
@@ -138,7 +146,7 @@
                             </scrollView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="Fd5-Oq-a7R" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="2JK-GR-u8A"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Nez-q1-OlR" secondAttribute="trailing" constant="20" id="3Pm-Uf-GhW"/>
@@ -158,13 +166,14 @@
                         <outlet property="labelFeel" destination="FLW-lG-df8" id="bAt-Tz-6GI"/>
                         <outlet property="labelName" destination="ckp-32-7hr" id="boi-DA-ksI"/>
                         <outlet property="labelTemp" destination="kvX-zT-plj" id="voT-TN-UvI"/>
+                        <outlet property="mapView" destination="7lK-cU-P7W" id="LQ2-Hd-oqH"/>
                         <outlet property="searchButton" destination="Nez-q1-OlR" id="iv8-BK-CdM"/>
                         <outlet property="searchLocationTextfield" destination="T9L-kg-J6B" id="vAA-7o-W0h"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="49.618320610687022" y="3.5211267605633805"/>
+            <point key="canvasLocation" x="227" y="-41"/>
         </scene>
         <!--Location Names View Controller-->
         <scene sceneID="8K7-eC-6TM">
@@ -208,7 +217,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v08-Yd-IYH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="996" y="4"/>
+            <point key="canvasLocation" x="1495" y="18"/>
         </scene>
     </scenes>
     <resources>

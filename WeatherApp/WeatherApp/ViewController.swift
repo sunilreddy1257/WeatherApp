@@ -20,6 +20,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var imageCloud: UIImageView!
     @IBOutlet weak var labelFeel: UILabel!
     
+    @IBOutlet weak var mapView: MKMapView!
+    
     let locationManager = CLLocationManager()
     
     private let viewModel = WeatherViewModel()
@@ -118,14 +120,9 @@ class ViewController: UIViewController {
             }
         }
         labelFeel.text = "\(AllData.feelsLike) \(feelsData). \(info)"
-        saveRecentLocation()
-    }
-    
-    func loadImage() {
-        //let url = URL(string: "https://example.com/image.png")
-    //https://openweathermap.org/img/wn/" //10d@2x.png
-       // imageView.kf.setImage(with: url)
-       // if let url = URL(string: "\(UrlsList.imageUrl)\()")
+        self.saveRecentLocation()
+        self.removeAnnotations()
+        self.showLocationOnMap()
     }
     
     //@usage: Save updated serached location details
@@ -134,6 +131,19 @@ class ViewController: UIViewController {
         userDefaults.set(viewModel.weatherDetails?.coord.lat ?? 0.0, forKey: UserdefaultsKeys.latitude)
         userDefaults.set(viewModel.weatherDetails?.coord.lon ?? 0.0, forKey: UserdefaultsKeys.longitude)
         userDefaults.synchronize()
+    }
+    
+    func showLocationOnMap() {
+        let locationAnnotation = MKPointAnnotation()
+        locationAnnotation.coordinate = CLLocationCoordinate2D(latitude: viewModel.weatherDetails?.coord.lat ?? 0.0, longitude: viewModel.weatherDetails?.coord.lon ?? 0.0)
+        locationAnnotation.title = viewModel.getLocationDetails() // Optional
+        //locationAnnotation.subtitle = "Example 0 subtitle" // Optional
+        self.mapView.addAnnotation(locationAnnotation)
+    }
+    
+    func removeAnnotations() {
+        let allAnnotations = self.mapView.annotations
+        self.mapView.removeAnnotations(allAnnotations)
     }
     
 }
