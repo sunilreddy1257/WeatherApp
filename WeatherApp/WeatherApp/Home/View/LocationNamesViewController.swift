@@ -24,7 +24,7 @@ class LocationNamesViewController: UIViewController {
     
     weak var delegate: LocationSelectionDelegate?
     let locationNameCell = "LocationNameCell"
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -32,10 +32,10 @@ class LocationNamesViewController: UIViewController {
     //Based on number of citys contentsize will be calculated
     func calculateAndSetPreferredContentSize() {
         let totalItems = CGFloat(locationNames?.count ?? 0)
-            let totalHeight = totalItems * 55
+        let totalHeight = totalItems * 55
         preferredContentSize = CGSize(width: self.view.frame.size.width, height: totalHeight)
-        }
-
+    }
+    
 }
 //MARK: Tableview Delegate and DataSource Methods
 extension LocationNamesViewController: UITableViewDataSource, UITableViewDelegate {

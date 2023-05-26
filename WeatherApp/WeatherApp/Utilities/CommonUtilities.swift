@@ -14,7 +14,7 @@ class CommonUtilities {
     //@usage: Date conversion
     func dateConvertion(date: Date, dateFormat: String) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = dateFormat//"MMM dd, HH:mm a"
+        formatter.dateFormat = dateFormat
         return formatter.string(from: Date.now)
     }
 }
