@@ -116,7 +116,6 @@ class ViewController: UIViewController {
         if let infoData = viewModel.weatherDetails?.weather, infoData.count > 0 {
             info = "\(infoData.first?.description ?? "")" + "."
             let urlString = "\(UrlsList.imageUrl)\(infoData.first?.icon ?? "")\(AllData.imageExtension)"
-            print("image url..\(urlString)")
             if let url = URL(string: urlString) {
                 imageCloud.kf.setImage(with: url)
             }

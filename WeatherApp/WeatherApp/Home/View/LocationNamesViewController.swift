@@ -47,7 +47,6 @@ extension LocationNamesViewController: UITableViewDataSource, UITableViewDelegat
         if let cell = tableView.dequeueReusableCell(withIdentifier: locationNameCell) as? LocationNameCell {
             let locationData = locationNames?[indexPath.row]
             cell.textLabel?.text = "\(locationData?.name ?? ""), \(locationData?.sys?.country ?? "")"
-            //print("\(locationData?.name ?? "")")
             return cell
         }
         return UITableViewCell()
