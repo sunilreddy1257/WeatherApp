@@ -25,12 +25,21 @@ class ViewController: UIViewController {
     private let viewModel = WeatherViewModel()
     
     private var cancellables = Set<AnyCancellable>()
+    
+    let userDefaults = UserDefaults.standard
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        getUserLocation()
+        if let isLocation = userDefaults.string(forKey: "isLocation"), isLocation == "yes" {
+            print(userDefaults.double(forKey: "latitude"))
+            print(userDefaults.double(forKey: "longitude"))
+                getWeatherDetails(lat: userDefaults.double(forKey: "latitude"), lon: userDefaults.double(forKey: "longitude"))
+        }
+        else {
+            getUserLocation()
+        }
         bindViewModel()
     }
     
@@ -39,7 +48,9 @@ class ViewController: UIViewController {
         viewModel.$weatherDetails.receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 //print("data...\(self?.viewModel.weatherDetails?.main.pressure ?? 0)")
-                self?.updateData()
+                if let details = self?.viewModel.weatherDetails?.main.temp {
+                    self?.updateData()
+                }
             }
             .store(in: &self.cancellables)
         
@@ -71,7 +82,8 @@ class ViewController: UIViewController {
         if searchLocationTextfield.text?.count ?? 0 > 0 {
             searchLocationTextfield.resignFirstResponder()
             viewModel.locationsList.removeAll()
-            getLocationDetails(searchString: searchLocationTextfield.text ?? "")
+            let trimmedString = (searchLocationTextfield.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+            getLocationDetails(searchString: trimmedString)
         }
     }
     
@@ -101,6 +113,14 @@ class ViewController: UIViewController {
             info = "\(infoData.first?.main ?? "")" + "."
         }
         labelFeel.text = "Feels like \(feelsData). \(info)"
+        saveSearchedLocation()
+    }
+    
+    func saveSearchedLocation() {
+        userDefaults.set("yes", forKey: "isLocation")
+        userDefaults.set(viewModel.weatherDetails?.coord.lat ?? 0.0, forKey: "latitude")
+        userDefaults.set(viewModel.weatherDetails?.coord.lon ?? 0.0, forKey: "longitude")
+        userDefaults.synchronize()
     }
     
     func dateConvertion(date: Date) -> String {
