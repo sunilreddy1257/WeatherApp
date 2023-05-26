@@ -22,24 +22,31 @@ final class WeatherAppTests: XCTestCase {
     func testWeatherData() {
         getWeatherDetails()
         
+        //Weather Details
         XCTAssertNotNil(viewModel.weatherDetails)
         XCTAssertNotNil(viewModel.weatherDetails?.weather)
         XCTAssertNotNil(viewModel.weatherDetails?.name)
         
+        //Location Name Details
         let locationName = viewModel.getLocationDetails()
         XCTAssertEqual(locationName, "Orlando, US")
         XCTAssertNotEqual(locationName, "US")
         
+        //Date is available or not
         let formatDate = viewModel.getFormatDate()
         XCTAssertNotNil(formatDate)
 
+        //Minimum Temperature
         let tempMin = viewModel.getTempMin()
         XCTAssertNotNil(tempMin)
         XCTAssertEqual(tempMin, "24")
-        
+        XCTAssertNotEqual(tempMin, "")
+
+        //Feel Like info
         let feelLike = viewModel.getFeelLike()
         XCTAssertNotNil(feelLike)
         XCTAssertEqual(feelLike, "26")
+        XCTAssertNotEqual(feelLike, "")
 
     }
 
@@ -58,12 +65,14 @@ final class WeatherAppTests: XCTestCase {
         }
     }
     
+    //@usage: Once rceive the mock data assign to that data to weatherDetails property in viewmodel
     func getWeatherDetails() {
         if let weatherData = readLocalJSONFile(forName: "DummyWeatherDetails") {
             viewModel.weatherDetails = parse(jsonData: weatherData)
         }
     }
     
+    //@usage: return decodable data
     func parse(jsonData: Data) -> WeatherApp.WeatherDetailsModel? {
         do {
             let decodedData = try JSONDecoder().decode(WeatherDetailsModel.self, from: jsonData)
@@ -74,10 +83,11 @@ final class WeatherAppTests: XCTestCase {
         return nil
     }
     
+    //@usage: get the json file data if given file name available
     func readLocalJSONFile(forName name: String) -> Data? {
         do {
             guard let pathString = Bundle(for: type(of: self)).path(forResource: name, ofType: "json") else {
-                fatalError("UnitTestData.json not found")
+                return nil
             }
             let fileUrl = URL(fileURLWithPath: pathString)
             let data = try Data(contentsOf: fileUrl)
