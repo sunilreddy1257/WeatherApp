@@ -18,6 +18,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var labelName: UILabel!
     @IBOutlet weak var labelTemp: UILabel!
     @IBOutlet weak var imageCloud: UIImageView!
+    @IBOutlet weak var labelFeel: UILabel!
     
     let locationManager = CLLocationManager()
     
@@ -90,9 +91,22 @@ class ViewController: UIViewController {
     }
     
     func updateData()  {
-        labelDate.text = "\(Date())"
+        labelDate.text = "\(dateConvertion(date: Date(timeIntervalSince1970: Double(viewModel.weatherDetails?.dt ?? 0))))"
         labelName.text = "\(viewModel.weatherDetails?.name ?? ""), \(viewModel.weatherDetails?.sys.country ?? "")"
-        labelTemp.text = "\(viewModel.weatherDetails?.main.temp ?? 0.0)" + "°" + "C"
+        //labelTemp.text = "\(Int(viewModel.weatherDetails?.main.temp ?? 0.0))" + "°" + "C"
+        labelTemp.text = "\(Int(viewModel.weatherDetails?.main.tempMin ?? 0.0))" + "°" + "C"
+        let feelsData = "\(Int(viewModel.weatherDetails?.main.feelsLike ?? 0.0))" + "°" + "C"
+        var info = ""
+        if let infoData = viewModel.weatherDetails?.weather, infoData.count > 0 {
+            info = "\(infoData.first?.main ?? "")" + "."
+        }
+        labelFeel.text = "Feels like \(feelsData). \(info)"
+    }
+    
+    func dateConvertion(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM dd, HH:mm a"
+        return formatter.string(from: Date.now)
     }
 }
 

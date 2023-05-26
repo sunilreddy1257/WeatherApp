@@ -58,12 +58,12 @@
                                                             <constraint firstAttribute="height" constant="25" id="7QT-o2-1Or"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
+                                                        <color key="textColor" systemColor="systemRedColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ckp-32-7hr">
                                                         <rect key="frame" x="0.0" y="25" width="333" height="45"/>
-                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -103,15 +103,28 @@
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="nxF-Qb-qdg"/>
                                                 </constraints>
                                             </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FLW-lG-df8">
+                                                <rect key="frame" x="30" y="300" width="333" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="Jxd-l0-3kP"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="bxk-N8-IcG"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="PU0-td-Mvw" firstAttribute="top" secondItem="opx-0L-HRb" secondAttribute="bottom" constant="30" id="4Gy-6q-YCr"/>
+                                            <constraint firstItem="FLW-lG-df8" firstAttribute="trailing" secondItem="opx-0L-HRb" secondAttribute="trailing" id="7nd-6D-N5e"/>
                                             <constraint firstAttribute="height" constant="685" id="LpO-Qu-adJ"/>
+                                            <constraint firstItem="FLW-lG-df8" firstAttribute="top" secondItem="PU0-td-Mvw" secondAttribute="bottom" constant="30" id="QqW-7i-a4q"/>
                                             <constraint firstItem="opx-0L-HRb" firstAttribute="leading" secondItem="YwR-4r-KZJ" secondAttribute="leading" constant="30" id="TmZ-s2-WLd"/>
                                             <constraint firstItem="PU0-td-Mvw" firstAttribute="leading" secondItem="opx-0L-HRb" secondAttribute="leading" id="XRf-oe-mWY"/>
                                             <constraint firstItem="opx-0L-HRb" firstAttribute="top" secondItem="YwR-4r-KZJ" secondAttribute="top" constant="40" id="fU4-FM-hAN"/>
                                             <constraint firstAttribute="trailing" secondItem="opx-0L-HRb" secondAttribute="trailing" constant="30" id="kBz-cZ-8MZ"/>
+                                            <constraint firstItem="FLW-lG-df8" firstAttribute="leading" secondItem="opx-0L-HRb" secondAttribute="leading" id="lbk-uR-mnF"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -143,6 +156,7 @@
                     <connections>
                         <outlet property="imageCloud" destination="yco-yb-N6B" id="Vll-Ac-gHo"/>
                         <outlet property="labelDate" destination="RCQ-GD-gqb" id="tsd-rD-OWL"/>
+                        <outlet property="labelFeel" destination="FLW-lG-df8" id="bAt-Tz-6GI"/>
                         <outlet property="labelName" destination="ckp-32-7hr" id="boi-DA-ksI"/>
                         <outlet property="labelTemp" destination="kvX-zT-plj" id="voT-TN-UvI"/>
                         <outlet property="searchButton" destination="Nez-q1-OlR" id="iv8-BK-CdM"/>
@@ -205,6 +219,9 @@
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
