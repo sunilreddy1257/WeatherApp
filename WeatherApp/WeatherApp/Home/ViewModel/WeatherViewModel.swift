@@ -27,7 +27,7 @@ class WeatherViewModel: WeatherViewModelProtocol {
      @usage: based on location we are getting the list of locations.
      */
     func getLocationsList(locationName: String, limit: Int = 5) {
-        let url = UrlsList.baseUrl + "geo/1.0/direct?q=\(locationName)&limit=\(limit)&appid=\(UrlsList.apiKey)"
+        let url = UrlsList.baseUrl + "geo/1.0/direct?q=\(locationName)&limit=\(limit)&appid=\(AllData.apiKey)"
         WeatherService.shared.getData(url: url, type: LocationModel.self)
             .sink { completion in
                 switch completion {
@@ -47,7 +47,7 @@ class WeatherViewModel: WeatherViewModelProtocol {
      @usage: getting the weather details - temp, feeling like etc
      */
     func getWeatherDetails(lat: Double, lon: Double) {
-        let url = UrlsList.baseUrl + "data/2.5/weather?lat=\(lat)&lon=\(lon)&units=metric&appid=\(UrlsList.apiKey)"
+        let url = UrlsList.baseUrl + "data/2.5/weather?lat=\(lat)&lon=\(lon)&units=metric&appid=\(AllData.apiKey)"
         WeatherService.shared.getDetails(url: url, type: WeatherDetailsModel.self)
             .sink { completion in
                 switch completion {

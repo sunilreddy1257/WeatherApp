@@ -14,6 +14,7 @@ struct UserdefaultsKeys {
 }
 
 struct AllData {
+    static let apiKey = "2f7b7b9a2eca27b0b7b86e08123ea5b1"
     static let dateFormat = "MMM dd, HH:mm a"
     static let feelsLike = "Feels like"
     static let showCen = "°" + "C"
