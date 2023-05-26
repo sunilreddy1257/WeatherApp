@@ -36,6 +36,7 @@
 		105C6B3E2A1FE65F00928F8A /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
 		105C6B402A1FF77700928F8A /* LocationNamesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationNamesViewController.swift; sourceTree = "<group>"; };
 		105C6B422A1FF91B00928F8A /* LocationNameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationNameCell.swift; sourceTree = "<group>"; };
+		105C6B472A204A6800928F8A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +208,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				105C6B252A1FDCF300928F8A /* Base */,
+				105C6B472A204A6800928F8A /* en */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

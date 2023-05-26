@@ -7,7 +7,8 @@
 
 import UIKit
 
-protocol LocationNamesDelegate: AnyObject {
+//@usage: get selected location details along with position
+protocol LocationSelectionDelegate: AnyObject {
     func locationSelection(row: Int, details: LocationModel?)
 }
 
@@ -16,18 +17,17 @@ class LocationNamesViewController: UIViewController {
     var locationNames:[LocationModel]? {
         didSet {
             calculateAndSetPreferredContentSize()
-            print("Called")
         }
     }
-    let locationNameCell = "LocationNameCell"
-
+    
     @IBOutlet weak var tableView: UITableView!
     
-    weak var delegate: LocationNamesDelegate?
+    weak var delegate: LocationSelectionDelegate?
+    let locationNameCell = "LocationNameCell"
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        //tableView.register(LocationNameCell.self, forCellReuseIdentifier: locationNameCell)
     }
     func calculateAndSetPreferredContentSize() {
         let totalItems = CGFloat(locationNames?.count ?? 0)
@@ -45,7 +45,7 @@ extension LocationNamesViewController: UITableViewDataSource, UITableViewDelegat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "LocationNameCell") as? LocationNameCell {
             let locationData = locationNames?[indexPath.row]
-            cell.textLabel?.text = "\(locationData?.name ?? ""),\(locationData?.country ?? "")"
+            cell.textLabel?.text = "\(locationData?.name ?? ""), \(locationData?.country ?? "")"
             print("\(locationData?.name ?? "")")
             return cell
         }

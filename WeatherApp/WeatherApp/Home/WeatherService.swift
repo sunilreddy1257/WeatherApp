@@ -15,7 +15,7 @@ class WeatherService {
     
     private var cancellables = Set<AnyCancellable>()
     
-    func getLocationNames<T: Decodable>(url: String, type: T.Type) -> Future<[T], Error> {
+    func getData<T: Decodable>(url: String, type: T.Type) -> Future<[T], Error> {
         return Future<[T], Error> { [weak self] promise in
             guard let url = URL(string: url) else {
                 return promise(.failure(NetworkError.invalidURL))
@@ -44,7 +44,7 @@ class WeatherService {
         }
     }
     
-    func getWeatherDetails<T: Decodable>(url: String, type: T.Type) -> Future<T, Error> {
+    func getDetails<T: Decodable>(url: String, type: T.Type) -> Future<T, Error> {
         return Future<T, Error> { [weak self] promise in
             guard let url = URL(string: url) else {
                 return promise(.failure(NetworkError.invalidURL))

@@ -1,0 +1,12 @@
+
+/* Class = "UIButton"; normalTitle = "Search"; ObjectID = "Nez-q1-OlR"; */
+"Nez-q1-OlR.normalTitle" = "Search";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "RCQ-GD-gqb"; */
+"RCQ-GD-gqb.text" = "Label";
+
+/* Class = "UITextField"; placeholder = "Please enter city names of US"; ObjectID = "T9L-kg-J6B"; */
+"T9L-kg-J6B.placeholder" = "Please enter city names of US";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ckp-32-7hr"; */
+"ckp-32-7hr.text" = "Label";

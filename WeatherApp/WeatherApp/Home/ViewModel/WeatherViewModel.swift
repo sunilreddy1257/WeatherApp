@@ -8,7 +8,14 @@
 import Foundation
 import Combine
 
-class WeatherViewModel {
+protocol WeatherViewModelProtocol {
+    var locationsList: [LocationModel] {set get}
+    var weatherDetails: WeatherDetailsModel? {set get}
+    func getLocationsList(locationName: String, limit: Int)
+    func getWeatherDetails(lat: Double, lon: Double)
+}
+
+class WeatherViewModel: WeatherViewModelProtocol {
     
     @Published var locationsList = [LocationModel]()
     @Published var weatherDetails: WeatherDetailsModel?
@@ -21,7 +28,7 @@ class WeatherViewModel {
      */
     func getLocationsList(locationName: String, limit: Int = 5) {
         let url = UrlsList.baseUrl + "geo/1.0/direct?q=\(locationName)&limit=\(limit)&appid=\(UrlsList.apiKey)"
-        WeatherService.shared.getLocationNames(url: url, type: LocationModel.self)
+        WeatherService.shared.getData(url: url, type: LocationModel.self)
             .sink { completion in
                 switch completion {
                 case .finished:
@@ -40,8 +47,8 @@ class WeatherViewModel {
      @usage: getting the weather details - temp, feeling like etc
      */
     func getWeatherDetails(lat: Double, lon: Double) {
-        let url = UrlsList.baseUrl + "data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=\(UrlsList.apiKey)"
-        WeatherService.shared.getWeatherDetails(url: url, type: WeatherDetailsModel.self)
+        let url = UrlsList.baseUrl + "data/2.5/weather?lat=\(lat)&lon=\(lon)&units=metric&appid=\(UrlsList.apiKey)"
+        WeatherService.shared.getDetails(url: url, type: WeatherDetailsModel.self)
             .sink { completion in
                 switch completion {
                 case .finished:

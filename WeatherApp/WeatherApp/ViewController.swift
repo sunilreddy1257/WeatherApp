@@ -13,6 +13,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var searchLocationTextfield: UITextField!
     @IBOutlet weak var searchButton: UIButton!
     
+    @IBOutlet weak var labelDate: UILabel!
+    
+    @IBOutlet weak var labelName: UILabel!
+    @IBOutlet weak var labelTemp: UILabel!
+    @IBOutlet weak var imageCloud: UIImageView!
+    
     let locationManager = CLLocationManager()
     
     private let viewModel = WeatherViewModel()
@@ -31,7 +37,8 @@ class ViewController: UIViewController {
         
         viewModel.$weatherDetails.receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                print("data...\(self?.viewModel.weatherDetails?.main.pressure ?? 0)")
+                //print("data...\(self?.viewModel.weatherDetails?.main.pressure ?? 0)")
+                self?.updateData()
             }
             .store(in: &self.cancellables)
         
@@ -81,7 +88,12 @@ class ViewController: UIViewController {
             present(locationsVc, animated: true, completion: nil)
         }
     }
-
+    
+    func updateData()  {
+        labelDate.text = "\(Date())"
+        labelName.text = "\(viewModel.weatherDetails?.name ?? ""), \(viewModel.weatherDetails?.sys.country ?? "")"
+        labelTemp.text = "\(viewModel.weatherDetails?.main.temp ?? 0.0)" + "°" + "C"
+    }
 }
 
 //MARK: CLLocationManager Delegate Methods
@@ -106,7 +118,7 @@ extension ViewController: UITextFieldDelegate {
     }
 }
 
-extension ViewController: LocationNamesDelegate {
+extension ViewController: LocationSelectionDelegate {
     func locationSelection(row: Int, details: LocationModel?) {
         //searchLocationTextfield.text = ""
         if let longitude = details?.lon, let latitude = details?.lat {
