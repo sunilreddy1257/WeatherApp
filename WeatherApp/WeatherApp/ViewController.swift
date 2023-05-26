@@ -135,10 +135,18 @@ class ViewController: UIViewController {
     
     func showLocationOnMap() {
         let locationAnnotation = MKPointAnnotation()
-        locationAnnotation.coordinate = CLLocationCoordinate2D(latitude: viewModel.weatherDetails?.coord.lat ?? 0.0, longitude: viewModel.weatherDetails?.coord.lon ?? 0.0)
+        let coordinate = CLLocationCoordinate2D(latitude: viewModel.weatherDetails?.coord.lat ?? 0.0, longitude: viewModel.weatherDetails?.coord.lon ?? 0.0)
+        locationAnnotation.coordinate = coordinate
         locationAnnotation.title = viewModel.getLocationDetails() // Optional
-        //locationAnnotation.subtitle = "Example 0 subtitle" // Optional
         self.mapView.addAnnotation(locationAnnotation)
+        setMapFocus(centerCoordinate: coordinate, radiusInKm: 150)
+    }
+    
+    func setMapFocus(centerCoordinate: CLLocationCoordinate2D, radiusInKm radius: CLLocationDistance)
+    {
+        let diameter = radius * 2000
+        let region: MKCoordinateRegion = MKCoordinateRegion(center: centerCoordinate, latitudinalMeters: diameter, longitudinalMeters: diameter)
+    self.mapView.setRegion(region, animated: false)
     }
     
     func removeAnnotations() {
