@@ -8,14 +8,8 @@
 import Foundation
 import Combine
 
-protocol WeatherViewModelProtocol {
-    var locationsList: [List] {set get}
-    var weatherDetails: WeatherDetailsModel? {set get}
-    func getLocationsList(locationName: String, limit: Int)
-    func getWeatherDetails(lat: Double, lon: Double)
-}
 
-class WeatherViewModel: WeatherViewModelProtocol {
+class WeatherViewModel {
     
     @Published var locationsList = [List]()
     @Published var weatherDetails: WeatherDetailsModel?
